@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To - Do List</title>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/4697/4697260.png" type="image/x-icon">
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            font-family: 'poppins',sans-serif;
+            box-sizing: border-box;
+        }
+        body{
+            background: url(https://img.freepik.com/premium-vector/abstract-background-geometric-blue-green-wave-effect-with-memphis-background_586360-2484.jpg?semt=ais_hybrid) no-repeat;
+            background-size: cover;
+        }
+        .container{
+            width: 100%;
+            min-height: 90vh;
+            background: transparent;
+            padding: 10px;
+        }
+        .todo{
+            width: 100%;
+            max-width: 560px;
+            background: transparent;
+            border: 3px solid black;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            margin: 100px auto 20px;
+            padding: 40px 30px 70px;
+            border-radius: 12px;
+        }
+        .todo h1{
+            color: #002765;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .entertask{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #d6d6d6;
+            border-radius: 30px;
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+        input{
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button{
+            border: none;
+            outline: none;
+            padding: 16px 50px;
+            background: #ff5945;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 40px;
+        }
+        ul li{
+            margin: 12px 0px;
+            list-style: none;
+            font-size: 17px;
+            padding: 13px 8px 13px 50px ;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            background: #e1e1e1;
+            border-radius: 30px;
+        }
+        ul li::before{
+            content: '';
+            position: absolute;
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            background-image: url(pictures/32341.png);
+            background-size: cover;
+            background-position: center;
+            top: 10px;
+            left: 8px;
+        }
+        ul li.checked{
+            color: #555;
+            text-decoration: line-through;
+        }
+        ul li.checked::before{
+            background-image: url(pictures/checked.png);
+        }
+        ul li span{
+            position: absolute;
+            top: 0px;
+            right: 0;
+            width: 70px;
+            height: 45px;
+            font-size: 26px;
+            color: black;
+            line-height: 47px;
+            text-align: center;
+        }
+        ul li span:hover{
+            background: #ff5945;
+            color: white;
+            border-radius: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="todo">
+            <h1>To - Do List</h1>
+            <div class="entertask">
+                <input type="text" id="inputtodo" placeholder="Add your text">
+                <button onclick="addtask()">Add</button>
+            </div>
+                    <ul id="listtodo">
+                        <!--<li class="checked">Task 1</li>
+                        <li>Task 2</li>
+                        <li>Task 3</li>-->
+                    </ul>
+        </div>
+    </div>
+    <script>
+        const inputBox = document.getElementById("inputtodo");
+        const listContainer = document.getElementById("listtodo");
+        function addtask(){
+            if(inputBox.value === ''){
+                alert("You must write something!.");
+            }
+            else{
+                let li = document.createElement("li");
+                li.innerHTML = inputBox.value;
+                listContainer.appendChild(li);
+                let span = document.createElement("span");
+                span.innerHTML = "\u00d7";
+                li.appendChild(span);
+            }
+            inputBox.value = "";
+            saveData();
+        }
+
+        listContainer.addEventListener("click", function(e){
+            if(e.target.tagName === "LI"){
+                e.target.classList.toggle("checked");
+                saveData();
+        }
+        else if(e.target.tagName === "SPAN"){
+            e.target.parentElement.remove();
+            saveData();
+        }
+        }, false);
+
+        function saveData(){
+            localStorage.setItem("data", listContainer.innerHTML);
+        }
+        function showTask(){
+            listContainer.innerHTML = localStorage.getItem("data");
+        }
+        showTask();
+    </script>
+</body>
+</html>
